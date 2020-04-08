@@ -44,6 +44,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 16. [R语言：决策树ID3/C4.5/CART/C5.0算法的实现](https://blog.csdn.net/weixin_43216017/article/details/87739323)
 
+
+17. [决策树ID3原理及R语言python代码实现（西瓜书）](https://www.bbsmax.com/A/ke5jv4wy5r/)
+
+
 ## Algorithm
 
 | Algorithm |       Data Type        |       Feature Selection       | Pruning Rule | Missing Value |
@@ -59,7 +63,20 @@ knitr::opts_chunk$set(echo = TRUE)
 |  SPRINT   |          ?             |               ?               |      ?       |       ?       |
 
 
+
+## EDA
+
+
+### Data Type
+
+
+
+### Missing Value
+
+
+
 ## ID3
+
 
 ```{r}
 library(rpart)
