@@ -86,7 +86,9 @@ library(rpart) # ID3, CART
 # library(C50) # C5.0
 ```
 
-## Partition Data into Training and Testing
+## Partition Data 
+
+Ramdomly partition data into Training and Testing
 ```{r}
 Partition = function(data, train_proportion = 0.9){
   train_index = sample(x = nrow(data), 
@@ -267,6 +269,7 @@ ModelPerformance <- function(predict_condition, true_condition){
 
 ## 1. iris
 
+### Summary
 ```{r message=FALSE, warning=FALSE}
 # Raw Data
 iris %>% DT::datatable()
@@ -287,21 +290,72 @@ summary(iris)
 
 
 ### Conclusion
-- Data : iris(R default)
+- Data : iris (in R)
 - Explained Var (Y) : Category (Species)
 - Explainatory Var (X) : Continuous 
-- Missing Value: None
+- Missing Value: 0
 
 
-Recommended Algorithm: CART, C4.5
+Recommended Algorithm: **CART**
 
 ---
 
-##  2. Breast Cancer
+## 2. Titanic
+
+Titanic in R seems to be an aggregation data, not raw data.
+
+```{r}
+data('Titanic')
+class(Titanic)
+Titanic
+```
+
+### Rawdata 
+
+```{r}
+Titanic_df = data.frame(Titanic)
+repeating_sequence <- rep(1:nrow(Titanic_df), Titanic_df$Freq)
+Titanic_raw <- Titanic_df[repeating_sequence,]
+Titanic_raw$Freq <- NULL # delete Freq column
+
+nrow(Titanic_df) # Titanic is an aggregation data
+nrow(Titanic_raw) 
+
+DT::datatable(Titanic_raw)
+```
+
+### Summary
+```{r}
+# Check Variabl Type
+Titanic_raw %>% str()
+
+# Check Missing Value
+is.na(Titanic_raw) %>% sum()
+
+# Check Imbalence Data
+table(Titanic_raw$Survived)
+
+# Check Distribution
+summary(Titanic_raw)
+```
+
+### Conclusion
+- Data : Titanic (in R)
+- Explained Var (Y) : Category (Survived)
+- Explainatory Var (X) : Category
+- Missing Value: 0
+
+Recommended Algorithm: **ID3**
+
+
+---
+
+##  3. Breast Cancer
+
+### Raw Data
 
 Source : [UCI : Breast Cancer Data Set](http://archive.ics.uci.edu/ml/datasets/breast+cancer)
 
-### Raw Data
 ```{r message=FALSE, warning=FALSE}
 
 BreastCancer <-  read.csv('http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer/breast-cancer.data', header = FALSE)
@@ -319,10 +373,10 @@ BreastCancer.Names
 
 ### Set Column Name
 ```{r}
-colnames_BC <- c("Class", "age", "menopause", "tumor-size","inv-nodes", 
+BC_colnames <- c("Class", "age", "menopause", "tumor-size","inv-nodes", 
                  "node-caps", "deg-malig", "breast", "breast-quad", "irradiate")
 
-colnames(BreastCancer) <- colnames_BC
+colnames(BreastCancer) <- BC_colnames
 
 # Check Column Name 
 DT::datatable(BreastCancer)
@@ -339,11 +393,21 @@ str(BreastCancer)
 ```
 
 ### Missing Value
+
+Check "Summary" : 8. Missing Attribute Values: (denoted by "?")
+
 ```{r}
-is.na(BreastCancer) %>% sum()
+# Alter "?" to NA
+BreastCancer %<>% 
+  as.matrix() %T>% {.[. == "?"] = NA} %>%
+  as.data.frame()  
+
+# Missing Value Num
+BreastCancer %>% is.na() %>% sum()
+
 ```
 
-### Check Imbalanced
+### Check Imbalance 
 ```{r}
 summary(BreastCancer)
 table(BreastCancer$irradiate)
@@ -352,11 +416,17 @@ table(BreastCancer$irradiate)
 
 ### Conclusion
 - Data : iris(R default)
-- Explained Var (Y) : Category
+- Explained Var (Y) : Category(irradiate)
 - Explainatory Var (X) : Category
-- Missing Value: None
+- Total Missing Value : 9
+  - breast-quad : 1
+  - node-caps : 8
+ 
+Recommended Algorithm: **C4.5**
 
-Recommended Algorithm: ID3, C5.0
+
+---
+
 
 
 
@@ -366,19 +436,32 @@ Recommended Algorithm: ID3, C5.0
 
 ## ID3
 
+### 0. Setting
+
+<font color="blue" size = 4>Next time, you could just change data and formula in this chunk.</font>
+
+```{r}
+set.seed(20200419)
+data = Titanic_raw
+train_proportion = 0.9
+formula = formula(Survived  ~ .)
+Y_attribute = 'Survived'
+
+```
+
 ### 1. Model
+
 ```{r message=FALSE, warning=FALSE}
 library(rpart)
-set.seed(20200409)
-dataPartition = Partition(data = BreastCancer, train_proportion = 0.9)
+
+dataPartition = Partition(data, train_proportion)
 
 training = dataPartition$training
 testing = dataPartition$testing
 
-formula = formula(irradiate ~ .)
 
-Control.ID3 = rpart.control(minsplit = 20, # min obs. in node
-                            minbucket = 6, # min obs. in leaf, defaut is round(minsplit/3)
+Control.ID3 = rpart.control(minsplit = 10, # min obs. in node
+                            minbucket = 3, # min obs. in leaf, defaut is round(minsplit/3)
                             cp = 0.001, # Lower cp first. Later prune tree by larger one.
                             maxcompete = 4, # ???
                             maxsurrogate = 5, # ???
@@ -407,9 +490,10 @@ Tree.ID3
 ```{r message=FALSE, warning=FALSE}
 library(rpart.plot)
 rpart.plot(Tree.ID3,
-           branch=1, 
-           fallen.leaves=T,
-           cex=0.6)
+           branch=0, # tree shape
+           type = 1, # node shape
+           cex=0.8, # sign size
+           fallen.leaves=T)
 
 ```
 
@@ -424,10 +508,12 @@ pred.ID3.train <- predict(Tree.ID3,
                     newdata=training,
                     type="class")
 
-perform.ID3.Apparent <- ModelPerformance(pred.ID3.train, training$irradiate)
+perform.ID3.Apparent <- ModelPerformance(pred.ID3.train, training[,Y_attribute])
 perform.ID3.Apparent$confusion_matrix
 perform.ID3.Apparent$ACC
 ```
+
+<font size=4 color="blue">Apparent accuracy is not very high, it may not be over-fitting.</font>
 
 ---
  
@@ -438,7 +524,7 @@ pred.ID3.test <- predict(Tree.ID3,
                     newdata=testing,
                     type="class")
 
-perform.ID3.True <- ModelPerformance(pred.ID3.test, testing$irradiate)
+perform.ID3.True <- ModelPerformance(pred.ID3.test, testing[,Y_attribute])
 perform.ID3.True$confusion_matrix
 perform.ID3.True$ACC
 
@@ -452,7 +538,12 @@ perform.ID3.True$plot_negative
 
 ### 4. Prune
 
-To avoid over-fitting, prune tree by proper cp. 
+To avoid over-fitting, prune tree by proper cp.
+
+To look up a proper cp, one way is to look up **lower** cross-validation error(**xerror**). 
+
+<font size=4 color="blue">Not over-fitting : This part just shows how prunung works.</font>
+
 
 ```{r}
 printcp(Tree.ID3)
@@ -465,9 +556,10 @@ Tree.ID3_prune
 
 ```{r message=FALSE, warning=FALSE}
 rpart.plot(Tree.ID3_prune,
-           branch=1, 
-           fallen.leaves=T,
-           cex=0.6)
+           branch=0, # tree shape
+           type = 1, # node shape
+           cex=0.8, # sign size
+           fallen.leaves=T)
 ```
 
 
@@ -482,7 +574,7 @@ pred.ID3_prune.train <- predict(Tree.ID3_prune,
                     newdata=training,
                     type="class")
 
-perform.ID3_prune.Apparent <- ModelPerformance(pred.ID3_prune.train, training$irradiate)
+perform.ID3_prune.Apparent <- ModelPerformance(pred.ID3_prune.train, training[,Y_attribute])
 
 perform.ID3_prune.Apparent$confusion_matrix
 perform.ID3_prune.Apparent$ACC
@@ -497,7 +589,7 @@ pred.ID3_prune.test <- predict(Tree.ID3_prune,
                     newdata=testing,
                     type="class")
 
-perform.ID3_prune.True <- ModelPerformance(pred.ID3_prune.test, testing$irradiate)
+perform.ID3_prune.True <- ModelPerformance(pred.ID3_prune.test, testing[,Y_attribute])
 
 perform.ID3_prune.True$confusion_matrix
 perform.ID3_prune.True$ACC
@@ -513,10 +605,11 @@ perform.ID3_prune.True$plot_negative
 
 ### 6. Conclusion
 
+
 | CP Threshold | 0.001 (unpruned) | 0.01 (pruned) |  Trend |
 | ------------ | ---------------- | ------------- | ------ |
-|   Training   |      82.49%      |     81.71%    |    ↓   |
-|   Testing    |      79.31%      |     89.65%    |    ↑   |
+|   Training   |      XX.XX%      |     XX.XX%    |    ↓   |
+|   Testing    |      XX.XX%      |     XX.XX%    |    ↑   |
 
 
 
@@ -525,6 +618,15 @@ perform.ID3_prune.True$plot_negative
 
 ## C4.5
 
+### Install RWeka
+1. If Java hasn't been installed : https://www.java.com/zh_TW/download/win10.jsp
+2. Sys.setenv(JAVA_HOME='C:\\Program Files\\Java\\jdk1.8.0_191\\jre') 
+3. install.packages("RWeka")
+
+```{r}
+library(RWeka)
+library(pROC) 
+```
 
 ## C5.0
 
