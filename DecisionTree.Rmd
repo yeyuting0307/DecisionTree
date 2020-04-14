@@ -460,15 +460,15 @@ training = dataPartition$training
 testing = dataPartition$testing
 
 
-Control.ID3 = rpart.control(minsplit = 10, # min obs. in node
-                            minbucket = 3, # min obs. in leaf, defaut is round(minsplit/3)
-                            cp = 0.001, # Lower cp first. Later prune tree by larger one.
+Control.ID3 = rpart.control(minsplit = 2, # min obs. in node
+                            minbucket = 1, # min obs. in leaf
+                            cp = 0.001, # ID3, No prune
                             maxcompete = 4, # ???
                             maxsurrogate = 5, # ???
                             usesurrogate = 2, # ???
                             xval = 10, # cross validation
                             surrogatestyle = 0, # ???
-                            maxdepth = 30 #The root node counted as depth 0
+                            maxdepth = 30 # The root node counted as depth 0
                             )
 
 
@@ -499,7 +499,7 @@ rpart.plot(Tree.ID3,
 
 ---
 
-### 3. Predict (unpruned)
+### 3. Predict
 
 #### Training
 ```{r message=FALSE, warning=FALSE}
@@ -536,74 +536,12 @@ perform.ID3.True$plot_negative
 
 ---
 
-### 4. Prune
-
-To avoid over-fitting, prune tree by proper cp.
-
-To look up a proper cp, one way is to look up **lower** cross-validation error(**xerror**). 
-
-<font size=4 color="blue">Not over-fitting : This part just shows how prunung works.</font>
-
-
-```{r}
-printcp(Tree.ID3)
-```
-
-```{r}
-Tree.ID3_prune <- prune(Tree.ID3,cp= 0.01)
-Tree.ID3_prune
-```
-
-```{r message=FALSE, warning=FALSE}
-rpart.plot(Tree.ID3_prune,
-           branch=0, # tree shape
-           type = 1, # node shape
-           cex=0.8, # sign size
-           fallen.leaves=T)
-```
 
 
 ---
 
-### 5. Predict (pruned)
 
-#### Training
-```{r message=FALSE, warning=FALSE}
-# Apparent Performance after pruning
-pred.ID3_prune.train <- predict(Tree.ID3_prune, 
-                    newdata=training,
-                    type="class")
-
-perform.ID3_prune.Apparent <- ModelPerformance(pred.ID3_prune.train, training[,Y_attribute])
-
-perform.ID3_prune.Apparent$confusion_matrix
-perform.ID3_prune.Apparent$ACC
-```
-
----
-
-#### Testing
-```{r message=FALSE, warning=FALSE}
-# True Performance after pruning
-pred.ID3_prune.test <- predict(Tree.ID3_prune, 
-                    newdata=testing,
-                    type="class")
-
-perform.ID3_prune.True <- ModelPerformance(pred.ID3_prune.test, testing[,Y_attribute])
-
-perform.ID3_prune.True$confusion_matrix
-perform.ID3_prune.True$ACC
-
-perform.ID3_prune.True$plot_positive
-perform.ID3_prune.True$plot_negative
-
-
-
-```
-
----
-
-### 6. Conclusion
+### 5. Conclusion
 
 
 | CP Threshold | 0.001 (unpruned) | 0.01 (pruned) |  Trend |
@@ -627,6 +565,70 @@ perform.ID3_prune.True$plot_negative
 library(RWeka)
 library(pROC) 
 ```
+
+### 4. Prune
+
+To avoid over-fitting, prune tree by proper cp.
+
+To look up a proper cp, one way is to look up **lower** cross-validation error(**xerror**). 
+
+<font size=4 color="blue">Not over-fitting : This part just shows how prunung works.</font>
+
+
+```{r}
+# printcp(Tree.ID3)
+```
+
+```{r}
+# Tree.ID3_prune <- prune(Tree.ID3,cp= 0.01)
+# Tree.ID3_prune
+```
+
+```{r message=FALSE, warning=FALSE}
+# rpart.plot(Tree.ID3_prune,
+#            branch=0, # tree shape
+#            type = 1, # node shape
+#            cex=0.8, # sign size
+#            fallen.leaves=T)
+```
+
+
+### 5. Predict (pruned)
+
+#### Training
+```{r message=FALSE, warning=FALSE}
+# Apparent Performance after pruning
+# pred.ID3_prune.train <- predict(Tree.ID3_prune, 
+#                     newdata=training,
+#                     type="class")
+# 
+# perform.ID3_prune.Apparent <- ModelPerformance(pred.ID3_prune.train, training[,Y_attribute])
+# 
+# perform.ID3_prune.Apparent$confusion_matrix
+# perform.ID3_prune.Apparent$ACC
+```
+
+---
+
+#### Testing
+```{r message=FALSE, warning=FALSE}
+# True Performance after pruning
+# pred.ID3_prune.test <- predict(Tree.ID3_prune, 
+#                     newdata=testing,
+#                     type="class")
+# 
+# perform.ID3_prune.True <- ModelPerformance(pred.ID3_prune.test, testing[,Y_attribute])
+# 
+# perform.ID3_prune.True$confusion_matrix
+# perform.ID3_prune.True$ACC
+# 
+# perform.ID3_prune.True$plot_positive
+# perform.ID3_prune.True$plot_negative
+# 
+
+
+```
+
 
 ## C5.0
 
