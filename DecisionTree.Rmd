@@ -17,6 +17,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Reference
 
+### Main Concept
+
 1. [**(推薦)**决策树（decision tree）(一)——构造决策树方法](https://blog.csdn.net/u012328159/article/details/70184415)
 
 2. [**(推薦)**决策树（decision tree）(二)——剪枝](https://blog.csdn.net/u012328159/article/details/79285214)
@@ -25,38 +27,69 @@ knitr::opts_chunk$set(echo = TRUE)
 
 4. [**(推薦)**决策树（decision tree）（四）——缺失值处理](https://blog.csdn.net/u012328159/article/details/79413610)
 
-5.  [Decision Tree 決策樹 | CART, Conditional Inference Tree, RandomForest](https://www.jamleecute.com/decision-tree-cart-%E6%B1%BA%E7%AD%96%E6%A8%B9/)
-
-6. [機器學習：決策樹總結｜ID3 C4.5/C5.0 CHAID CART與QUEST](https://kknews.cc/zh-tw/tech/m36obez.html)
-
-7. [決策樹(Decision Tree)以及隨機森林(Random Forest)介紹](https://medium.com/jameslearningnote/%E8%B3%87%E6%96%99%E5%88%86%E6%9E%90-%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E7%AC%AC3-5%E8%AC%9B-%E6%B1%BA%E7%AD%96%E6%A8%B9-decision-tree-%E4%BB%A5%E5%8F%8A%E9%9A%A8%E6%A9%9F%E6%A3%AE%E6%9E%97-random-forest-%E4%BB%8B%E7%B4%B9-7079b0ddfbda)
-
-8. [HOW DECISION TREE ALGORITHM WORKS](http://dataaspirant.com/2017/01/30/how-decision-tree-algorithm-works/)
-
-9. [C4.5 Pessimistic Error Pruning，PEP](http://gitlinux.net/2019-06-04-C45/)
-
-10. [决策树建树原理之C4.5和C5.0以及CART建树原理（二](https://blog.csdn.net/weixin_44835596/article/details/89852921)
-
-11. [IBM SPSS Modeler算法系列--决策树CHAID算法](https://www.cda.cn/view/20421.html)
-
-12. [IBM SPSS Modeler算法系列-----决策树C5.0算法](https://blog.csdn.net/chenjunji123456/article/details/52189312?depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-12&utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-12)
-
-13. [CART 分類與回歸樹](https://www.itread01.com/content/1509178954.html)
+5. [HOW DECISION TREE ALGORITHM WORKS](http://dataaspirant.com/2017/01/30/how-decision-tree-algorithm-works/)
 
 
-14. [Regression Tree | 迴歸樹, Bagging, Bootstrap Aggregation | R語言](https://www.jamleecute.com/regression-tree-%E8%BF%B4%E6%AD%B8%E6%A8%B9-bagging-bootstrap-aggrgation-r%E8%AA%9E%E8%A8%80/)
+### ID3
 
-15. [rpart 决策树中的 Cp（complexity parameter）参数](https://blog.csdn.net/a8131357leo/article/details/89529677)
+1. [分类算法 -- 决策树ID3算法](https://blog.csdn.net/weixin_43216017/article/details/87474045)
 
-16. [R语言：决策树ID3/C4.5/CART/C5.0算法的实现](https://blog.csdn.net/weixin_43216017/article/details/87739323)
+1. [ID3 Algorithm & ROC Analysis ](https://www.slideshare.net/talhakabakus/id3-algorithm-roc-analysis-14984288)
+
+### C4.5
+
+1. [决策树建树原理之C4.5和C5.0以及CART建树原理（二](https://blog.csdn.net/weixin_44835596/article/details/89852921)
+
+1. [C4.5 Pessimistic Error Pruning，PEP](http://gitlinux.net/2019-06-04-C45/)
 
 
-17. [决策树ID3原理及R语言python代码实现（西瓜书）](https://www.bbsmax.com/A/ke5jv4wy5r/)
+### CART
 
-18. [NTU CINC : R軟體資料探勘實務(上)--分類模型](http://www.cc.ntu.edu.tw/chinese/epaper/0034/20150920_3410.html)
+1. [Decision Tree 決策樹 | CART, Conditional Inference Tree, RandomForest](https://www.jamleecute.com/decision-tree-cart-%E6%B1%BA%E7%AD%96%E6%A8%B9/)
+
+1. [CART 分類與回歸樹](https://www.itread01.com/content/1509178954.html)
 
 
-19. [Meaning of Surrogate Split](https://stats.stackexchange.com/questions/171574/meaning-of-surrogate-split)
+
+### CHAID 
+
+1. [IBM SPSS Modeler算法系列--决策树CHAID算法](https://www.cda.cn/view/20421.html)
+
+
+### C50
+
+1. [IBM SPSS Modeler算法系列-----决策树C5.0算法](https://blog.csdn.net/chenjunji123456/article/details/52189312?depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-12&utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-12)
+
+
+
+### Code
+
+1. [决策树ID3原理及R语言python代码实现（西瓜书）](https://www.bbsmax.com/A/ke5jv4wy5r/)
+
+1. [R语言：决策树ID3/C4.5/CART/C5.0算法的实现](https://blog.csdn.net/weixin_43216017/article/details/87739323)
+
+1. [NTU CINC : R軟體資料探勘實務(上)--分類模型](http://www.cc.ntu.edu.tw/chinese/epaper/0034/20150920_3410.html)
+
+1. [Generate ROC Curve Charts for Print and Interactive Use](https://cran.r-project.org/web/packages/plotROC/vignettes/examples.html)
+
+1. [決策樹(Decision Tree)以及隨機森林(Random Forest)介紹](https://medium.com/jameslearningnote/%E8%B3%87%E6%96%99%E5%88%86%E6%9E%90-%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E7%AC%AC3-5%E8%AC%9B-%E6%B1%BA%E7%AD%96%E6%A8%B9-decision-tree-%E4%BB%A5%E5%8F%8A%E9%9A%A8%E6%A9%9F%E6%A3%AE%E6%9E%97-random-forest-%E4%BB%8B%E7%B4%B9-7079b0ddfbda)
+
+
+### Others
+
+1. [機器學習：決策樹總結｜ID3 C4.5/C5.0 CHAID CART與QUEST](https://kknews.cc/zh-tw/tech/m36obez.html)
+
+
+1. [Regression Tree | 迴歸樹, Bagging, Bootstrap Aggregation | R語言](https://www.jamleecute.com/regression-tree-%E8%BF%B4%E6%AD%B8%E6%A8%B9-bagging-bootstrap-aggrgation-r%E8%AA%9E%E8%A8%80/)
+
+
+1.  [rpart 决策树中的 Cp（complexity parameter）参数](https://blog.csdn.net/a8131357leo/article/details/89529677)
+
+
+1. [Meaning of Surrogate Split](https://stats.stackexchange.com/questions/171574/meaning-of-surrogate-split)
+
+1. [消除誤差修剪法 Reduced error pruning (REP)](http://123android.blogspot.com/2011/11/111027-data-mining.html)
+
 
 ---
 
@@ -415,7 +448,7 @@ table(BreastCancer$irradiate)
 
 
 ### Conclusion
-- Data : iris(R default)
+- Data : Breast Cancer (R default)
 - Explained Var (Y) : Category(irradiate)
 - Explainatory Var (X) : Category
 - Total Missing Value : 9
@@ -447,6 +480,16 @@ train_proportion = 0.9
 formula = formula(Survived  ~ .)
 Y_attribute = 'Survived'
 
+Control.ID3 = rpart::rpart.control(
+                      minsplit = 2, # min obs. in node
+                      minbucket = 1, # min obs. in leaf
+                      cp = 0, # ID3, No prune
+                      xval = 10, # cross validation
+                      maxdepth = 30, # The root node counted as depth 0
+                      maxcompete = 4, 
+                      maxsurrogate = 5, 
+                      usesurrogate = 2, 
+                      surrogatestyle = 0)
 ```
 
 ### 1. Model
@@ -459,17 +502,6 @@ dataPartition = Partition(data, train_proportion)
 training = dataPartition$training
 testing = dataPartition$testing
 
-
-Control.ID3 = rpart.control(minsplit = 2, # min obs. in node
-                            minbucket = 1, # min obs. in leaf
-                            cp = 0.001, # ID3, No prune
-                            maxcompete = 4, # ???
-                            maxsurrogate = 5, # ???
-                            usesurrogate = 2, # ???
-                            xval = 10, # cross validation
-                            surrogatestyle = 0, # ???
-                            maxdepth = 30 # The root node counted as depth 0
-                            )
 
 
 Tree.ID3 <- rpart(formula = formula, 
@@ -513,7 +545,30 @@ perform.ID3.Apparent$confusion_matrix
 perform.ID3.Apparent$ACC
 ```
 
-<font size=4 color="blue">Apparent accuracy is not very high, it may not be over-fitting.</font>
+---
+
+```{r message=FALSE, warning=FALSE}
+#### ROC
+
+# library(pROC)
+# roc.ID3 <- roc(response = training[,Y_attribute],
+#                predictor = as.numeric(pred.ID3.train),
+#                plot = F)
+# 
+# plot(roc.ID3, 
+#      print.auc=TRUE, 
+#      auc.polygon=TRUE, 
+#      grid=c(0.1, 0.2),
+#      grid.col=c("green", "red"), 
+#      max.auc.polygon=TRUE,
+#      auc.polygon.col="skyblue", 
+#      print.thres=TRUE,
+#      main='ROC Curve of ID3')
+# 
+# 
+# roc.ID3
+```
+
 
 ---
  
@@ -534,20 +589,19 @@ perform.ID3.True$plot_negative
 
 ```
 
----
 
 
 
 ---
 
 
-### 5. Conclusion
+### 4. Conclusion
 
 
-| CP Threshold | 0.001 (unpruned) | 0.01 (pruned) |  Trend |
-| ------------ | ---------------- | ------------- | ------ |
-|   Training   |      XX.XX%      |     XX.XX%    |    ↓   |
-|   Testing    |      XX.XX%      |     XX.XX%    |    ↑   |
+| CP Threshold | 0.001 (unpruned) | 0.01 (pruned) |  Trend  |
+| ------------ | ---------------- | ------------- | ------- |
+|   Training   |      XX.XX%      |     XX.XX%    |    ↑↓   |
+|   Testing    |      XX.XX%      |     XX.XX%    |    ↑↓   |
 
 
 
@@ -561,11 +615,141 @@ perform.ID3.True$plot_negative
 2. Sys.setenv(JAVA_HOME='C:\\Program Files\\Java\\jdk1.8.0_191\\jre') 
 3. install.packages("RWeka")
 
+### 0. Setting
+
+[Weka_control parameters](https://rdrr.io/cran/RWeka/man/Weka_control.html)
+
+```{r}
+data = BreastCancer
+train_proportion = 0.9
+set.seed(20200416)
+formula = formula(irradiate ~ .)
+Y_attribute = 'irradiate'
+
+Control.C45.Unprune = RWeka::Weka_control(
+                       U = TRUE,  # Use unpruned tree
+                       R= FALSE, # Use reduced error pruning
+                       M=2, # Minimum number of instances per leaf
+                       B=FALSE # Use binary splits only
+                       )
+
+Control.C45.Prune = RWeka::Weka_control(
+                       U = FALSE,  
+                       R= TRUE, 
+                       M=2, 
+                       B=FALSE 
+                       )
+
+```
+
+
+### 1. Model
+
 ```{r}
 library(RWeka)
 library(pROC) 
+
+dataPartition = Partition(data, train_proportion)
+
+training = dataPartition$training
+testing = dataPartition$testing
+
+
+Tree.C45 <- J48(formula = formula,
+                data = training,
+                control = Control.C45.Prune)
+
+
 ```
 
+### 2. Plot
+
+```{r message=FALSE, warning=FALSE}
+require(partykit)
+plot(Tree.C45)
+```
+
+### 3. Predict
+
+#### Training
+```{r}
+pred.C45.train = predict(Tree.C45, 
+                         newdata=training, 
+                         type = "class")
+
+perform.C45.Apparent <- ModelPerformance(pred.C45.train, training[,Y_attribute])
+perform.C45.Apparent$confusion_matrix
+perform.C45.Apparent$ACC
+```
+
+---
+
+```{r}
+#### ROC
+
+# library(pROC)
+# roc.C45 <- roc(response = training[,Y_attribute],
+#                predictor = as.numeric(pred.C45.train),
+#                plot = F)
+# 
+# plot(roc.C45, 
+#      print.auc=TRUE, 
+#      auc.polygon=TRUE, 
+#      grid=c(0.1, 0.2),
+#      grid.col=c("green", "red"), 
+#      max.auc.polygon=TRUE,
+#      auc.polygon.col="skyblue", 
+#      print.thres=TRUE,
+#      main='ROC Curve of C45')
+# 
+# 
+# roc.C45
+```
+
+
+
+---
+
+#### Testing
+```{r}
+# True Performance
+pred.C45.test <- predict(Tree.C45, 
+                    newdata=testing,
+                    type="class")
+
+perform.C45.True <- ModelPerformance(pred.C45.test, testing[,Y_attribute])
+perform.C45.True$confusion_matrix
+perform.C45.True$ACC
+
+
+perform.C45.True$plot_positive
+perform.C45.True$plot_negative
+```
+
+
+### 4. Conclusion
+
+
+---
+
+## CART
+
+---
+
+## C5.0
+
+---
+
+## CHAID
+
+
+
+
+
+
+
+
+## ------------------------------
 ### 4. Prune
 
 To avoid over-fitting, prune tree by proper cp.
@@ -628,19 +812,4 @@ To look up a proper cp, one way is to look up **lower** cross-validation error(*
 
 
 ```
-
-
-## C5.0
-
-
-## CHAID
-
-
-
-
-
-
-
-
-
 
