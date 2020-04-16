@@ -742,7 +742,7 @@ perform.ID3_prune.True$plot_negative
 ---
 ---
 
-## C4.5
+## C4_5
 
 ### Install RWeka
 1. If Java hasn't been installed : https://www.java.com/zh_TW/download/win10.jsp
@@ -1108,7 +1108,7 @@ perform.CART_prune.True$ACC
 
 ---
 
-## C5.0
+## C5_0
 
 C5.0Control Parameters:https://cran.r-project.org/web/packages/C50/C50.pdf 
 
@@ -1200,7 +1200,7 @@ roc.C50.train <- roc(response = training[,Y_attribute],
                max.auc.polygon=TRUE,
                auc.polygon.col="skyblue",
                print.thres=TRUE,
-               main='ROC Curve of CART')
+               main='ROC Curve of C5.0')
 
 roc.C50.train
 
@@ -1327,7 +1327,7 @@ roc.CHAID.train <- roc(response = training[,Y_attribute],
                max.auc.polygon=TRUE,
                auc.polygon.col="skyblue",
                print.thres=TRUE,
-               main='ROC Curve of CART')
+               main='ROC Curve of CHAID')
 
 roc.CHAID.train
 
