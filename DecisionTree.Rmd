@@ -19,13 +19,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Main Concept
 
-1. [**(推薦)**决策树（decision tree）(一)——构造决策树方法](https://blog.csdn.net/u012328159/article/details/70184415)
+1. [决策树（decision tree）(一)——构造决策树方法](https://blog.csdn.net/u012328159/article/details/70184415)
 
-2. [**(推薦)**决策树（decision tree）(二)——剪枝](https://blog.csdn.net/u012328159/article/details/79285214)
+2. [决策树（decision tree）(二)——剪枝](https://blog.csdn.net/u012328159/article/details/79285214)
 
-3. [**(推薦)**决策树（decision tree）(三)——连续值处理](https://blog.csdn.net/u012328159/article/details/79396893)
+3. [决策树（decision tree）(三)——连续值处理](https://blog.csdn.net/u012328159/article/details/79396893)
 
-4. [**(推薦)**决策树（decision tree）（四）——缺失值处理](https://blog.csdn.net/u012328159/article/details/79413610)
+4. [决策树（decision tree）（四）——缺失值处理](https://blog.csdn.net/u012328159/article/details/79413610)
 
 5. [HOW DECISION TREE ALGORITHM WORKS](http://dataaspirant.com/2017/01/30/how-decision-tree-algorithm-works/)
 
@@ -54,6 +54,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 1. [IBM SPSS Modeler算法系列--决策树CHAID算法](https://www.cda.cn/view/20421.html)
 
+1. [卡方自動互動檢測](https://www.newton.com.tw/wiki/%E5%8D%A1%E6%96%B9%E8%87%AA%E5%8B%95%E4%BA%92%E5%8B%95%E6%AA%A2%E6%B8%AC/21125021)
+
+
+1. [CHAID and R – When you need explanation – May 15, 2018](https://www.r-bloggers.com/chaid-and-r-when-you-need-explanation-may-15-2018/)
+
 
 ### C50
 
@@ -73,6 +78,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 1. [決策樹(Decision Tree)以及隨機森林(Random Forest)介紹](https://medium.com/jameslearningnote/%E8%B3%87%E6%96%99%E5%88%86%E6%9E%90-%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E7%AC%AC3-5%E8%AC%9B-%E6%B1%BA%E7%AD%96%E6%A8%B9-decision-tree-%E4%BB%A5%E5%8F%8A%E9%9A%A8%E6%A9%9F%E6%A3%AE%E6%9E%97-random-forest-%E4%BB%8B%E7%B4%B9-7079b0ddfbda)
 
+1. [卡方自動交叉檢驗 (CHAID)](https://rpubs.com/jiankaiwang/chaid)
+
+1. [Determining Creditworthiness for Loan Applications Using C5.0 Decision Trees](https://rpubs.com/cyobero/C50)
+
+1. [Package ‘C50’](https://cran.r-project.org/web/packages/C50/C50.pdf)
 
 ### Others
 
@@ -99,11 +109,11 @@ knitr::opts_chunk$set(echo = TRUE)
 | Algorithm | Explainatory Var. Type |       Feature Selection       | Pruning Rule | Missing Value |
 | --------- | ---------------------- | ----------------------------- | ------------ | ------------- |
 |    ID3    |       Discrete         |    Entropy, Information Gain  | Predicted ER |  Not Allowed  |
-|   C4.5    | Discrete & Continueous |    Entropy, IV, Gain Ratio    | **PEP, REP** |    Allowed    |
-|   CHAID   | Discrete & Continueous |    Chisquare Test p value     |      ?       |       ?       |
-|   CART    | Discrete & Continueous |       Gini Index, MSE         | Predicted ER |       ?       |
-|   QUEST   | Discrete & Continueous |  Chisquare / F Test p value   | Predicted ER |       ?       |
-|   C5.0    | Discrete & Continueous | Gain Ratio, PRISM?, Boosting? |     PEP      |       ?       |
+|   C4.5    | Discrete, Bi-partition |    Entropy, IV, Gain Ratio    | **PEP, REP** |    Allowed    |
+|   CHAID   | Discrete, Ch-Merge     |    Chisquare Test p value     |  No Pruning  |       ?       |
+|   CART    |       Continuous       |       Gini Index, MSE         | Predicted ER |       ?       |
+|   QUEST   |          ?             |  Chisquare / F Test p value   | Predicted ER |       ?       |
+|   C5.0    | Discrete, Bi-partition | Gain Ratio, PRISM?, Boosting? |     PEP      |       ?       |
 |  PUBLIC   |          ?             |               ?               |      ?       |       ?       |
 |   SLIQ    |          ?             |               ?               |      ?       |       ?       |
 |  SPRINT   |          ?             |               ?               |      ?       |       ?       |
@@ -475,7 +485,7 @@ table(BreastCancer$irradiate)
   - breast-quad : 1
   - node-caps : 8
  
-Recommended Algorithm: **C4.5**
+Recommended Algorithm: **C4.5, CHAID**
 
 
 ---
@@ -494,9 +504,9 @@ Recommended Algorithm: **C4.5**
 <font color="blue" size = 4>Next time, you could just change data and formula in this chunk.</font>
 
 ```{r}
-set.seed(20200419)
 data = Titanic_raw
 train_proportion = 0.9
+set.seed(20200419)
 formula = formula(Survived  ~ .)
 Y_attribute = 'Survived'
 
@@ -567,28 +577,29 @@ perform.ID3.Apparent$confusion_matrix
 perform.ID3.Apparent$ACC
 ```
 
----
 
 ```{r message=FALSE, warning=FALSE}
-#### ROC
 
-# library(pROC)
-# roc.ID3 <- roc(response = training[,Y_attribute],
-#                predictor = as.numeric(pred.ID3.train),
-#                plot = F)
-# 
-# plot(roc.ID3, 
-#      print.auc=TRUE, 
-#      auc.polygon=TRUE, 
-#      grid=c(0.1, 0.2),
-#      grid.col=c("green", "red"), 
-#      max.auc.polygon=TRUE,
-#      auc.polygon.col="skyblue", 
-#      print.thres=TRUE,
-#      main='ROC Curve of ID3')
-# 
-# 
-# roc.ID3
+library(pROC)
+
+pred.ID3.train.prob = predict(Tree.ID3, 
+                         newdata=training, 
+                         type = "prob")
+
+
+roc.ID3.train <- roc(response = training[,Y_attribute],
+               predictor = pred.ID3.train.prob[,2],
+               plot = T,
+               print.auc=TRUE,
+               auc.polygon=TRUE,
+               grid=c(0.1, 0.2),
+               grid.col=c("green", "red"),
+               max.auc.polygon=TRUE,
+               auc.polygon.col="skyblue",
+               print.thres=TRUE,
+               main='ROC Curve of ID3')
+
+
 ```
 
 
@@ -665,6 +676,31 @@ perform.ID3_prune.Apparent$confusion_matrix
 perform.ID3_prune.Apparent$ACC
 ```
 
+```{r message=FALSE, warning=FALSE}
+
+library(pROC)
+
+pred.ID3.train.prob = predict(Tree.ID3, 
+                         newdata=training, 
+                         type = "prob")
+
+
+roc.ID3.train <- roc(response = training[,Y_attribute],
+               predictor = pred.ID3.train.prob[,2],
+               plot = T,
+               print.auc=TRUE,
+               auc.polygon=TRUE,
+               grid=c(0.1, 0.2),
+               grid.col=c("green", "red"),
+               max.auc.polygon=TRUE,
+               auc.polygon.col="skyblue",
+               print.thres=TRUE,
+               main='ROC Curve of ID3 (prune)')
+
+
+
+```
+
 ---
 
 #### Testing
@@ -687,7 +723,6 @@ perform.ID3_prune.True$plot_negative
 
 
 ```
-
 
 
 
@@ -721,7 +756,7 @@ perform.ID3_prune.True$plot_negative
 ```{r message=FALSE, warning=FALSE}
 data = BreastCancer
 train_proportion = 0.9
-set.seed(20200416)
+set.seed(20200418)
 formula = formula(irradiate ~ .)
 Y_attribute = 'irradiate'
 
@@ -781,28 +816,31 @@ perform.C45.Apparent$confusion_matrix
 perform.C45.Apparent$ACC
 ```
 
----
 
 ```{r message=FALSE, warning=FALSE}
-#### ROC
 
-# library(pROC)
-# roc.C45 <- roc(response = training[,Y_attribute],
-#                predictor = as.numeric(pred.C45.train),
-#                plot = F)
-# 
-# plot(roc.C45, 
-#      print.auc=TRUE, 
-#      auc.polygon=TRUE, 
-#      grid=c(0.1, 0.2),
-#      grid.col=c("green", "red"), 
-#      max.auc.polygon=TRUE,
-#      auc.polygon.col="skyblue", 
-#      print.thres=TRUE,
-#      main='ROC Curve of C45')
-# 
-# 
-# roc.C45
+library(pROC)
+
+pred.C45.train.prob = predict(Tree.C45, 
+                         newdata=training, 
+                         type = "prob")
+
+
+roc.C45.train <- roc(response = training[,Y_attribute],
+               predictor = pred.C45.train.prob[,2],
+               plot = T,
+               print.auc=TRUE,
+               auc.polygon=TRUE,
+               grid=c(0.1, 0.2),
+               grid.col=c("green", "red"),
+               max.auc.polygon=TRUE,
+               auc.polygon.col="skyblue",
+               print.thres=TRUE,
+               main='ROC Curve of C4.5')
+
+
+
+roc.C45.train
 ```
 
 
@@ -824,6 +862,7 @@ perform.C45.True$ACC
 perform.C45.True$plot_positive
 perform.C45.True$plot_negative
 ```
+
 
 
 ### 4. Conclusion
@@ -911,28 +950,29 @@ perform.CART.Apparent$confusion_matrix
 perform.CART.Apparent$ACC
 ```
 
----
-
 ```{r message=FALSE, warning=FALSE}
-#### ROC
 
-# library(pROC)
-# roc.ID3 <- roc(response = training[,Y_attribute],
-#                predictor = as.numeric(pred.ID3.train),
-#                plot = F)
-# 
-# plot(roc.ID3, 
-#      print.auc=TRUE, 
-#      auc.polygon=TRUE, 
-#      grid=c(0.1, 0.2),
-#      grid.col=c("green", "red"), 
-#      max.auc.polygon=TRUE,
-#      auc.polygon.col="skyblue", 
-#      print.thres=TRUE,
-#      main='ROC Curve of ID3')
-# 
-# 
-# roc.ID3
+library(pROC)
+
+pred.CART.train.prob = predict(Tree.CART, 
+                         newdata=training, 
+                         type = "prob")
+
+
+roc.CART.train <- multiclass.roc(response = training[,Y_attribute],
+               predictor = pred.CART.train.prob,
+               plot = T,
+               print.auc=TRUE,
+               auc.polygon=TRUE,
+               grid=c(0.1, 0.2),
+               grid.col=c("green", "red"),
+               max.auc.polygon=TRUE,
+               auc.polygon.col="skyblue",
+               print.thres=TRUE,
+               main='ROC Curve of CART')
+
+roc.CART.train$rocs
+
 ```
 
 
@@ -946,6 +986,8 @@ pred.CART.test <- predict(Tree.CART,
                     type="class")
 
 perform.CART.True <- ModelPerformance(pred.CART.test, testing[,Y_attribute])
+
+## Confusion Matrix
 perform.CART.True$confusion_matrix
 
 ## Accuracy
@@ -954,6 +996,8 @@ perform.CART.True$ACC
 
 
 ```
+
+
 
 ---
 
@@ -1003,6 +1047,32 @@ perform.CART_prune.Apparent$confusion_matrix
 perform.CART_prune.Apparent$ACC
 ```
 
+
+```{r message=FALSE, warning=FALSE}
+
+library(pROC)
+
+pred.CART_prune.train.prob = predict(Tree.CART_prune, 
+                         newdata=training, 
+                         type = "prob")
+
+## There are 3 classes in Species of iris.
+roc.CART_prune.train <- multiclass.roc(response = training[,Y_attribute],
+               predictor = pred.CART_prune.train.prob,
+               plot = T,
+               print.auc=TRUE,
+               auc.polygon=TRUE,
+               grid=c(0.1, 0.2),
+               grid.col=c("green", "red"),
+               max.auc.polygon=TRUE,
+               auc.polygon.col="skyblue",
+               print.thres=TRUE,
+               main='ROC Curve of CART')
+
+roc.CART_prune.train$rocs
+```
+
+
 ---
 
 #### Testing
@@ -1020,11 +1090,7 @@ perform.CART_prune.True$confusion_matrix
 perform.CART_prune.True$ACC
 
 
-
-
-
 ```
-
 
 
 ---
@@ -1040,17 +1106,256 @@ perform.CART_prune.True$ACC
 
 
 
+---
+
+## C5.0
+
+C5.0Control Parameters:https://cran.r-project.org/web/packages/C50/C50.pdf 
+
+### 0. Setting
+```{r message=FALSE, warning=FALSE}
+data = BreastCancer
+train_proportion = 0.9
+set.seed(20200418)
+formula = formula(irradiate  ~ .)
+Y_attribute = 'irradiate'
 
 
+Control.C50 =C50::C5.0Control(
+                 subset = FALSE, 
+                 bands = 0, # when betewwn 2 and 1000, rules = TRUE
+                 winnow = FALSE,
+                 noGlobalPruning = TRUE, # The final global pruning step 
+                 CF = 0.25, 
+                 minCases = 2,
+                 fuzzyThreshold = FALSE,
+                 sample = 0,
+                 seed = sample.int(4096, size = 1) -1L,
+                 earlyStopping = TRUE
+                 )
+
+
+
+```
+
+### 1. Model
+```{r}
+library(C50)
+dataPartition = Partition(data, train_proportion)
+
+training = dataPartition$training
+testing = dataPartition$testing
+
+
+Tree.C50 <- C5.0(x = dplyr::select(training, -Y_attribute), 
+                 y = training[,Y_attribute],
+                 control =Control.C50,
+                 trials = 10, # boosting iteration
+                 rules = FALSE
+                 )
+
+summary(Tree.C50) 
+```
+
+### 2. Plot
+```{r}
+plot(Tree.C50)
+```
+
+
+### 3. Predict
+
+#### Training
+```{r message=FALSE, warning=FALSE}
+# Apparent Performance
+pred.C50.train <- predict(Tree.C50, 
+                    newdata=training,
+                    type="class")
+
+perform.C50.Apparent <- ModelPerformance(pred.C50.train, training[,Y_attribute])
+
+## Confusion Matrix
+perform.C50.Apparent$confusion_matrix
+
+## Accuracy
+perform.C50.Apparent$ACC
+```
+
+```{r message=FALSE, warning=FALSE}
+
+library(pROC)
+
+pred.C50.train.prob = predict(Tree.C50, 
+                         newdata=training, 
+                         type = "prob")
+
+
+roc.C50.train <- roc(response = training[,Y_attribute],
+               predictor = pred.C50.train.prob[,2],
+               plot = T,
+               print.auc=TRUE,
+               auc.polygon=TRUE,
+               grid=c(0.1, 0.2),
+               grid.col=c("green", "red"),
+               max.auc.polygon=TRUE,
+               auc.polygon.col="skyblue",
+               print.thres=TRUE,
+               main='ROC Curve of CART')
+
+roc.C50.train
+
+```
 
 ---
-## C5.0
+
+#### Testing
+```{r message=FALSE, warning=FALSE}
+# True Performance
+pred.C50.test <- predict(Tree.C50, 
+                    newdata=testing,
+                    type="class")
+
+perform.C50.True <- ModelPerformance(pred.C50.test, testing[,Y_attribute])
+
+## Confusion Matrix
+perform.C50.True$confusion_matrix
+
+## Accuracy
+perform.C50.True$ACC
+
+perform.C45.True$plot_positive
+perform.C45.True$plot_negative
+
+```
+
+
+### 4. Conclusion
 
 ---
 
 ## CHAID
 
+How to install CHAID package:
++ Check CHAID version: http://download.r-forge.r-project.org/src/contrib/
++ install.packages("http://download.r-forge.r-project.org/src/contrib/CHAID_0.1-2.tar.gz", repos = NULL)
 
+
+### 0. Setting
+```{r message=FALSE, warning=FALSE}
+data = BreastCancer
+train_proportion = 0.9
+set.seed(20200418)
+formula = formula(irradiate  ~ .)
+Y_attribute = 'irradiate'
+
+
+Control.CHAID = CHAID::chaid_control(
+                      alpha2 = 0.05, # for merging
+                      alpha3 = 0.01,  # for spliting
+                      alpha4 = 0.05, # for feature selection
+                      minsplit = 10, 
+                      minbucket = 3, 
+                      maxheight = 30, 
+                      minprob = 0.01,  # min proportion in leaf node (to total sample)
+                      stump = FALSE # only split root node
+                     )
+
+
+
+```
+
+
+
+### 1. Model
+```{r message=FALSE, warning=FALSE}
+library(CHAID)
+
+dataPartition = Partition(data, train_proportion)
+
+training = dataPartition$training
+testing = dataPartition$testing
+
+Tree.CHAID <- chaid(formula = formula, 
+                    data = training, 
+                    control = Control.CHAID)
+
+Tree.CHAID
+
+```
+
+### 2. Plot
+
+```{r}
+plot(Tree.CHAID)
+```
+
+
+### 3. Predict
+
+#### Training
+```{r message=FALSE, warning=FALSE}
+# Apparent Performance
+pred.CHAID.train <- predict(Tree.CHAID, 
+                    newdata=training,
+                    type="response")
+
+perform.CHAID.Apparent <- ModelPerformance(pred.CHAID.train, training[,Y_attribute])
+
+## Confusion Matrix
+perform.CHAID.Apparent$confusion_matrix
+
+## Accuracy
+perform.CHAID.Apparent$ACC
+```
+
+```{r message=FALSE, warning=FALSE}
+
+library(pROC)
+
+pred.CHAID.train.prob = predict(Tree.CHAID, 
+                         newdata=training, 
+                         type = "prob")
+
+
+roc.CHAID.train <- roc(response = training[,Y_attribute],
+               predictor = pred.CHAID.train.prob[,2],
+               plot = T,
+               print.auc=TRUE,
+               auc.polygon=TRUE,
+               grid=c(0.1, 0.2),
+               grid.col=c("green", "red"),
+               max.auc.polygon=TRUE,
+               auc.polygon.col="skyblue",
+               print.thres=TRUE,
+               main='ROC Curve of CART')
+
+roc.CHAID.train
+
+```
+
+
+---
+ 
+#### Testing
+```{r message=FALSE, warning=FALSE}
+# True Performance
+pred.CHAID.test <- predict(Tree.CHAID, 
+                    newdata=testing,
+                    type="response")
+
+perform.CHAID.True <- ModelPerformance(pred.CHAID.test, testing[,Y_attribute])
+
+## Confusion Matrix
+perform.CHAID.True$confusion_matrix
+## Accuracy
+perform.CART.True$ACC
+
+perform.CHAID.True$plot_positive
+perform.CHAID.True$plot_negative
+```
+
+
+### 4. Conclusion
 
 
 
@@ -1059,3 +1364,22 @@ perform.CART_prune.True$ACC
 
 ## ------------------------------
 
+
+
+### 0. Setting
+
+### 1. Model
+
+### 2. Plot
+
+### 3. Predict
+
+#### Training
+
+#### Testing
+
+### 4. Prune
+
+### 5. Predict (prune)
+
+### 6. Conclusion
